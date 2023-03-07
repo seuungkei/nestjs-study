@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -7,44 +8,34 @@ import {
   Patch,
   Post,
   Put,
+  UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { HttpExceptionFilter } from 'src/common/exceptions/http-exception.filter';
 import { SuccessInterceptor } from 'src/common/interceptors/success.interceptor';
 import { CatsService } from './cats.service';
+import { ReadOnlyCatDto } from './dto/cat.dto';
+import { CatRequestDto } from './dto/cats.request.dto';
 
 @Controller('cats')
 @UseInterceptors(SuccessInterceptor)
+@UseFilters(HttpExceptionFilter)
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 
-  @Get()
-  getAllCat() {
-    return 'all cats';
-  }
-
-  @Get(':id')
-  getOneCat(@Param('id', ParseIntPipe) param: number) {
-    console.log(param);
-    return 'one cat';
-  }
-
-  @Post()
-  createCat() {
-    return 'create cat';
-  }
-
-  @Put(':id')
-  updateCat() {
-    return 'update cat';
-  }
-
-  @Patch(':id')
-  updatePartialCat() {
-    return 'patch cat';
-  }
-
-  @Delete(':id')
-  deleteCat() {
-    return 'delete cat';
+  @ApiResponse({
+    status: 500,
+    description: 'Server Error...',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '성공',
+    type: ReadOnlyCatDto,
+  })
+  @ApiOperation({ summary: '회원가입' })
+  @Post('/signup')
+  async singUp(@Body() body: CatRequestDto) {
+    return await this.catsService.signUp(body);
   }
 }
