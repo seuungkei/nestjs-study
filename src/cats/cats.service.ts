@@ -3,6 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 import { CatRequestDto } from './dto/cats.request.dto';
 import { CatsRepository } from './cats.repository';
+import { Cat } from './cast.schema';
 
 @Injectable()
 export class CatsService {
@@ -26,5 +27,17 @@ export class CatsService {
     });
 
     return cat.readOnlyData;
+  }
+
+  async uploadImg(cat: Cat, images: Express.Multer.File[]) {
+    const fileName = `cats/${images[0].filename}`;
+
+    const newCat = await this.catsRepository.findByIdAndUpdateImg(
+      cat.id,
+      fileName,
+    );
+
+    console.log(newCat);
+    return newCat;
   }
 }
