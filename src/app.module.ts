@@ -24,7 +24,9 @@ import * as mongoose from 'mongoose';
 export class AppModule implements NestModule {
   private readonly isDev: boolean = process.env.MODE === 'dev' ? true : false;
   configure(consumer: MiddlewareConsumer) {
+    // req시 로그찍힘
     consumer.apply(LoggerMiddleware).forRoutes('*');
+    // req시 데이터베이스 로그
     mongoose.set('debug', this.isDev);
   }
 }
