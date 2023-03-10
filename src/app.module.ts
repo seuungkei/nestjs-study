@@ -7,16 +7,20 @@ import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import * as mongoose from 'mongoose';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
+    // .env config
     ConfigModule.forRoot(),
+    // mongodb 설정
     MongooseModule.forRoot(process.env.MONGO_DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     }),
     CatsModule,
     AuthModule,
+    CommentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
