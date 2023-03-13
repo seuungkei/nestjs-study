@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, Types } from 'mongoose';
-import { Comments, CommentsSchema } from 'src/comments/comments.schema';
+import { Model, Types } from 'mongoose';
+import { Comments } from 'src/comments/comments.schema';
 import { Cat } from '../cats/cats.schema';
 import { CatRequestDto } from './dto/cats.request.dto';
 
@@ -43,10 +43,10 @@ export class CatsRepository {
   }
 
   async findAll() {
-    const result = await this.catModel
-      .find()
-      .populate('comments', this.commentModel);
-
-    return result;
+    // const CommentsModel = mongoose.model('comments', CommentsSchema);
+    // const result = await this.catModel
+    //   .find()
+    //   .populate('comments', CommentsModel);
+    // return result;
   }
 }
